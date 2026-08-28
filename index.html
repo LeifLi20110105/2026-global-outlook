@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 全球现状与展望</title>
+<style>
+:root{
+  --paper:#f7f5f0;
+  --ink:#16161a;
+  --ink-soft:#55555e;
+  --gold:#a07d3f;
+  --gold-deep:#8a6a33;
+  --gold-soft:#c9b189;
+  --line:#e2dccf;
+  --dark:#11110e;
+  --dark-soft:#8d8a80;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  font-size:17px;line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:"SimSun","Songti SC","STSong",serif;}
+
+/* 顶部阅读进度条 */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),#d9b981);z-index:99;}
+
+/* ---------- Hero ---------- */
+.hero{
+  background:var(--dark);
+  color:#f0ede6;
+  padding:130px 28px 100px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;right:-180px;top:-180px;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(160,125,63,.14),transparent 65%);
+  pointer-events:none;
+}
+.hero::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold) 70%,transparent);
+  transform:scaleX(0);transform-origin:left;
+  animation:grow 1.3s cubic-bezier(.22,1,.36,1) .5s forwards;
+}
+@keyframes grow{to{transform:scaleX(1)}}
+.hero-inner{max-width:1000px;margin:0 auto;}
+.eyebrow{
+  font-size:12px;letter-spacing:.45em;text-transform:uppercase;
+  color:var(--gold-soft);margin-bottom:46px;
+  opacity:0;animation:fade 1s ease .2s forwards;
+}
+@keyframes fade{to{opacity:1}}
+.h-line{overflow:hidden;display:block;}
+.h-line span{
+  display:block;transform:translateY(115%);
+  animation:rise 1.1s cubic-bezier(.22,1,.36,1) forwards;
+}
+.h-line:nth-child(2) span{animation-delay:.18s}
+.h-line:nth-child(3) span{animation-delay:.34s}
+@keyframes rise{to{transform:translateY(0)}}
+.hero h1{
+  font-size:clamp(46px,7.5vw,88px);
+  font-weight:400;letter-spacing:.05em;line-height:1.22;
+  font-family:"SimSun","Songti SC",serif;
+}
+.hero h1 em{font-style:normal;color:var(--gold-soft);}
+.hero .sub{
+  margin-top:30px;color:var(--dark-soft);
+  font-size:14px;letter-spacing:.2em;
+  opacity:0;animation:fade 1.2s ease .8s forwards;
+}
+.hero .range{
+  margin-top:70px;display:flex;gap:56px;flex-wrap:wrap;
+  color:#b9b4a8;font-size:13px;
+  opacity:0;animation:fade 1.2s ease 1s forwards;
+}
+.hero .range b{display:block;font-weight:400;color:#f0ede6;font-size:16px;margin-top:4px;letter-spacing:.04em;}
+
+/* ---------- 数字墙 ---------- */
+.nums{max-width:1000px;margin:0 auto;padding:96px 28px 20px;}
+.nums .cap{
+  font-size:12px;letter-spacing:.4em;color:var(--gold);
+  margin-bottom:44px;
+}
+.grid-nums{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.cell{background:var(--paper);padding:34px 26px 30px;transition:background .5s;}
+.cell:hover{background:#fffdf9;}
+.cell .n{
+  font-size:clamp(34px,4.4vw,48px);line-height:1.1;
+  font-family:Georgia,"Times New Roman",serif;letter-spacing:.01em;
+  font-variant-numeric:tabular-nums;
+}
+.cell .n small{font-size:.46em;color:var(--ink-soft);font-family:"Microsoft YaHei",sans-serif;letter-spacing:.02em;}
+.cell .t{margin-top:14px;font-size:14px;color:var(--ink);letter-spacing:.1em;font-weight:600;}
+.cell .u{margin-top:3px;font-size:12.5px;color:#9c968a;line-height:1.6;}
+@media(max-width:760px){.grid-nums{grid-template-columns:repeat(2,1fr);}}
+
+/* ---------- 章节通用 ---------- */
+.section{max-width:1000px;margin:0 auto;padding:92px 28px;}
+.sec-head{display:flex;align-items:baseline;gap:20px;margin-bottom:52px;}
+.sec-head .no{font-family:Georgia,serif;font-size:14px;color:var(--gold);letter-spacing:.1em;}
+.sec-head h2{font-size:clamp(28px,4vw,38px);font-weight:400;letter-spacing:.08em;font-family:"SimSun","Songti SC",serif;}
+.sec-head::after{content:"";flex:1;height:1px;background:var(--line);}
+
+/* 主线 */
+.thread{
+  border-bottom:1px solid var(--line);padding:34px 0;
+  display:grid;grid-template-columns:60px 1fr;gap:26px;
+  opacity:0;transform:translateY(42px);
+  transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1);
+}
+.thread:first-child{border-top:1px solid var(--line);}
+.thread .idx{
+  font-family:Georgia,serif;color:var(--gold);font-size:14px;padding-top:8px;
+  transition:transform .5s cubic-bezier(.22,1,.36,1),color .5s;
+}
+.thread:hover .idx{transform:translateX(8px);color:var(--gold-deep);}
+.thread h3{font-size:21px;font-weight:400;letter-spacing:.05em;}
+.thread p{font-size:15px;color:var(--ink-soft);margin-top:10px;max-width:720px;text-align:justify;}
+.thread p b{color:var(--ink);font-weight:600;}
+
+/* 政策速览 */
+.policy{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
+.pc{background:var(--paper);padding:24px 26px;transition:background .5s;}
+.pc:hover{background:#fffdf9;}
+.pc .tag{font-size:12px;letter-spacing:.26em;color:var(--gold);font-weight:600;}
+.pc h4{font-size:16.5px;font-weight:600;margin-top:8px;letter-spacing:.03em;}
+.pc p{font-size:13.5px;color:var(--ink-soft);margin-top:6px;line-height:1.7;}
+@media(max-width:760px){.policy{grid-template-columns:1fr;}}
+
+/* 数据表 */
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:8px;}
+caption{text-align:left;font-size:13px;letter-spacing:.3em;color:var(--gold);margin-bottom:16px;}
+th{font-weight:600;text-align:left;padding:10px 12px;border-bottom:2px solid var(--ink);font-size:13.5px;letter-spacing:.06em;}
+td{padding:9px 12px;border-bottom:1px solid var(--line);color:var(--ink-soft);}
+td:first-child{color:var(--ink);font-weight:600;white-space:nowrap;}
+tr:hover td{background:#fdfbf6;}
+td b{color:var(--gold-deep);font-weight:600;font-family:Georgia,serif;font-size:15.5px;}
+
+/* 时间线 */
+.timeline{position:relative;padding-left:30px;}
+.timeline::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:var(--line);}
+.tl-item{
+  position:relative;padding:0 0 44px 30px;
+  opacity:0;transform:translateX(-26px);
+  transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1);
+}
+.tl-item::before{
+  content:"";position:absolute;left:-30px;top:10px;width:13px;height:13px;
+  border:1.5px solid var(--gold);border-radius:50%;background:var(--paper);
+  transition:background .4s,box-shadow .4s;
+}
+.tl-item.in::before{background:var(--gold);box-shadow:0 0 0 4px rgba(160,125,63,.15);}
+.tl-item .d{font-family:Georgia,serif;font-size:13px;color:var(--gold);letter-spacing:.14em;}
+.tl-item h4{font-size:17.5px;font-weight:600;margin-top:6px;letter-spacing:.03em;}
+.tl-item p{font-size:14px;color:var(--ink-soft);margin-top:5px;}
+
+/* 展望 */
+.outlook{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.oc{background:var(--paper);padding:30px 28px;transition:background .5s;}
+.oc:hover{background:#fffdf9;}
+.oc .tag{font-size:11.5px;letter-spacing:.3em;color:var(--gold);font-weight:600;}
+.oc h4{font-size:17.5px;font-weight:600;margin-top:14px;letter-spacing:.03em;}
+.oc p{font-size:13.5px;color:var(--ink-soft);margin-top:8px;line-height:1.75;text-align:justify;}
+@media(max-width:760px){.outlook{grid-template-columns:1fr;}}
+
+/* 页脚 */
+.footer{max-width:1000px;margin:0 auto;padding:70px 28px 96px;border-top:1px solid var(--line);}
+.footer p{font-size:13.5px;color:#9c968a;letter-spacing:.06em;max-width:700px;line-height:1.9;}
+.footer .src{margin-top:10px;font-size:12px;color:#b5afa2;}
+
+.reveal{opacity:0;transform:translateY(42px);transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1);}
+.reveal.in,.thread.in,.tl-item.in{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Global Outlook · 2026</div>
+    <h1>
+      <span class="h-line"><span>2026 全球<em>现状</em></span></span>
+      <span class="h-line"><span>与<em>展望</em>报告</span></span>
+    </h1>
+    <p class="sub">国内政策 · 国际时政 · 市场全景 · 未来方向 —— 关于当下与未来的简读</p>
+    <div class="range">
+      <div>研究区间<b>2026.02 — 2026.08</b></div>
+      <div>资料规模<b>约 270 条带源信息</b></div>
+      <div>关键数据<b>覆盖 6 大市场</b></div>
+      <div>编制日期<b>2026.08.28</b></div>
+    </div>
+  </div>
+</header>
+
+<!-- 数字墙 -->
+<section class="nums">
+  <div class="cap">KEY NUMBERS · 关键数字</div>
+  <div class="grid-nums">
+    <div class="cell"><div class="n" data-target="4639" data-decimals="0">0<small> 美元/盎司</small></div><div class="t">COMEX 黄金</div><div class="u">历史高位区 · 8月单月 +13%</div></div>
+    <div class="cell"><div class="n" data-target="3961" data-decimals="0">0<small> 点</small></div><div class="t">上证指数</div><div class="u">上半年成交额同比近翻倍</div></div>
+    <div class="cell"><div class="n" data-target="25662" data-decimals="0">0<small> 点</small></div><div class="t">恒生指数</div><div class="u">年内高点 26,338 点</div></div>
+    <div class="cell"><div class="n" data-target="7730" data-decimals="0">0<small> 点</small></div><div class="t">标普 500</div><div class="u">8 月首破 7,800 创历史新高</div></div>
+    <div class="cell"><div class="n" data-target="6.72" data-decimals="2">0<small> 兑美元</small></div><div class="t">人民币</div><div class="u">三年半新高</div></div>
+    <div class="cell"><div class="n" data-target="99.1" data-decimals="1">0<small> 点</small></div><div class="t">美元指数</div><div class="u">跌破 100 · 2025 全年 -9%</div></div>
+    <div class="cell"><div class="n" data-target="4.7" data-decimals="1">0<small> %</small></div><div class="t">上半年 GDP 增速</div><div class="u">Q2 4.3% 创近三年新低</div></div>
+    <div class="cell"><div class="n" data-target="16.9" data-decimals="1">0<small> %</small></div><div class="t">上半年出口增速</div><div class="u">7 月单月 +23.9% · 顺差 1,125 亿美元</div></div>
+  </div>
+</section>
+
+<!-- 五条主线 -->
+<section class="section">
+  <div class="sec-head reveal"><span class="no">01</span><h2>世界的五条主线</h2></div>
+
+  <div class="thread"><span class="idx">壹</span>
+    <div><h3>中国的政策底，与内需的短板</h3>
+    <p>赤字率 4%、专项债 4.4 万亿、超长期特别国债 1.3 万亿；LPR 连续 15 个月不变，降准降息空间仍在。出口 +16.9% 超预期，但 7 月制造业 PMI 跌破荣枯线（49.2%）、地产开发投资 -19.2%、城镇调查失业率 5.2%——<b>政策积极托底，内需仍是最大缺口</b>。</p></div>
+  </div>
+
+  <div class="thread"><span class="idx">贰</span>
+    <div><h3>中美：从「脱钩」到再接触</h3>
+    <p>特朗普 5 月访华，为九年来美国总统首次；关税谈判 5 月底重启。芯片管制部分松动——英伟达 H200「有条件放行」、对华营收占比降至 9%，但 8 月 6 日中方一天出台五项反制。台海围岛巡航常态化。<b>阶段性缓和，博弈常态化</b>。</p></div>
+  </div>
+
+  <div class="thread"><span class="idx">叁</span>
+    <div><h3>地缘冲突的「直接对抗化」</h3>
+    <p>俄乌进入第五年消耗战，特朗普斡旋（短期停火、90 分钟长谈）未果；7 月 17 日美军袭击伊朗多省，伊朗反击美军基地——中东从代理人战争走向直接交火，8 月 20 日美对伊「史上最严厉制裁」，红海航运禁令重启。<b>能源与供应链风险重新计入全球定价</b>。</p></div>
+  </div>
+
+  <div class="thread"><span class="idx">肆</span>
+    <div><h3>美元走弱，人民币资产重估</h3>
+    <p>美元指数跌破 100（2025 全年 -9%，八年最差年度表现）；7 月美国非农爆冷（-2.3 万人）；美联储「鹰派按兵不动」，全年维持 3.50%—3.75%，市场甚至定价年底加息约 30bp。人民币升破 6.74 创三年半新高——<b>资本回流与贸易顺差共振，人民币资产处于顺风窗口</b>。</p></div>
+  </div>
+
+  <div class="thread"><span class="idx">伍</span>
+    <div><h3>AI 是唯一的确定性主线</h3>
+    <p>美股牛市的引擎是英伟达——市值 5.4 万亿美元、Q2 财报超预期单日 +8.74%；中美博弈的焦点是芯片管制；国内「模数共振」行动与上海世界人工智能大会（古特雷斯出席）同步推进 AI 全球治理。<b>无论宏观如何波动，AI 是资本与政策的公约数</b>。</p></div>
+  </div>
+</section>
+
+<!-- 政策速览 -->
+<section class="section">
+  <div class="sec-head reveal"><span class="no">02</span><h2>政策速览</h2></div>
+  <div class="policy reveal">
+    <div class="pc"><div class="tag">财政</div><h4>赤字率 4%，史上积极</h4><p>赤字 5.89 万亿 · 专项债 4.4 万亿 · 特别国债 1.3 万亿（设备更新 2,000 亿 / 以旧换新 2,500 亿）</p></div>
+    <div class="pc"><div class="tag">货币</div><h4>适度宽松，按兵不动</h4><p>央行定调「降准降息仍有空间」；LPR 1 年 3.0% / 5 年 3.5%，连续 15 个月不变</p></div>
+    <div class="pc"><div class="tag">房地产</div><h4>控增量、去库存</h4><p>上海 2·25 打响一线松绑第一枪；7·30 政治局会议定调「国家队收储」存量商品房、保交房</p></div>
+    <div class="pc"><div class="tag">资本市场</div><h4>长钱入市 + 并购重组</h4><p>六部门中长期资金入市方案落地；上半年 IPO 71 家募资 705.7 亿（近翻倍），两融破 3 万亿</p></div>
+    <div class="pc"><div class="tag">产业</div><h4>新质生产力全面铺开</h4><p>「模数共振」AI 赋能工业 · 低空经济 31 省市出政策 · 以旧换新 15% 国补延续并扩品类</p></div>
+    <div class="pc"><div class="tag">开放</div><h4>扩大开放，稳住外资</h4><p>缩减外资准入负面清单；上半年进出口 25.47 万亿，历史同期首超 25 万亿，全球第一大货物贸易国</p></div>
+    <div class="pc"><div class="tag">民生</div><h4>稳就业，保民生</h4><p>两部门发文稳就业、2026 届毕业生支持措施直接实施；7 月城镇调查失业率 5.2%（青年 14.9%）</p></div>
+    <div class="pc"><div class="tag">顶层</div><h4>「十五五」开局之年</h4><p>规划纲要 3 月经人大表决通过；7·30 政治局会议明确「及时谋划出台务实管用增量政策」</p></div>
+  </div>
+</section>
+
+<!-- 数据全景 -->
+<section class="section">
+  <div class="sec-head reveal"><span class="no">03</span><h2>市场数据全景</h2></div>
+
+  <table class="reveal">
+    <caption>中国 · 宏观与市场</caption>
+    <tr><th style="width:26%;">指标</th><th>最新值</th><th>解读</th></tr>
+    <tr><td>GDP</td><td><b>上半年 +4.7%</b>（Q1 +5.0% / Q2 +4.3%）</td><td>Q2 创近三年新低，政策发力待观察</td></tr>
+    <tr><td>CPI / PPI</td><td><b>7月 +0.5% / +3.5%</b></td><td>CPI 温和；PPI 输入性通胀（6月曾 +4.1%）</td></tr>
+    <tr><td>制造业 PMI</td><td><b>7月 49.2%</b></td><td>2 月以来首次跌破荣枯线</td></tr>
+    <tr><td>社融 / M2</td><td><b>前7月社融 22.25 万亿</b> / M2 +7.7%</td><td>信用扩张偏弱，同比少增 1.74 万亿</td></tr>
+    <tr><td>进出口</td><td><b>上半年 +16.9%</b>；7月出口 +23.9%</td><td>外需超预期，7月顺差 1,125 亿美元</td></tr>
+    <tr><td>社零 / 工业</td><td><b>7月 +0.6% / +4.5%</b></td><td>内需平淡，汽车以外 +2.7%</td></tr>
+    <tr><td>房地产</td><td><b>1-7月开发投资 -19.2%</b>；销售面积 -13.4%</td><td>投资仍深跌；7月一线新房环比持平（上海同比 +3.0%）</td></tr>
+    <tr><td>A股</td><td><b>上证 3,961</b>；上半年成交 317.5 万亿</td><td>日均 2.74 万亿（同比 +96%）；7月回调后 8月企稳回升</td></tr>
+  </table>
+
+  <table class="reveal">
+    <caption>全球 · 资产与利率</caption>
+    <tr><th style="width:26%;">资产</th><th>最新值</th><th>解读</th></tr>
+    <tr><td>黄金</td><td><b>4,639 美元/盎司</b></td><td>1月曾见 4,888 历史新高；8月单月 +13%</td></tr>
+    <tr><td>原油（WTI）</td><td><b>约 83 美元/桶</b></td><td>8月 75.8 低点后反弹至 87 附近，中东溢价反复</td></tr>
+    <tr><td>伦铜</td><td><b>约 14,000 美元/吨</b></td><td>守稳高位</td></tr>
+    <tr><td>比特币</td><td><b>7.79 万美元</b></td><td>8月自 6.4 万反弹约 +20%</td></tr>
+    <tr><td>美元指数</td><td><b>99.1</b></td><td>7月非农爆冷后跌破 100；2025 全年 -9%</td></tr>
+    <tr><td>人民币</td><td><b>6.72</b></td><td>8·17 升破 6.74 创三年半新高</td></tr>
+    <tr><td>美联储利率</td><td><b>3.50%—3.75%</b></td><td>全年按兵不动；新主席沃什转鹰，市场定价年底加息 30bp</td></tr>
+    <tr><td>中国 LPR</td><td><b>3.0% / 3.5%</b></td><td>连续 15 个月不变；MLF 8月 5,000 亿净回笼 1,000 亿</td></tr>
+  </table>
+</section>
+
+<!-- 半年大事记 -->
+<section class="section">
+  <div class="sec-head reveal"><span class="no">04</span><h2>半年大事记</h2></div>
+  <div class="timeline">
+    <div class="tl-item"><div class="d">02.04</div><h4>习特通话，中美校准航向</h4><p>时隔 3 个月再通电话；同日中俄元首视频会晤</p></div>
+    <div class="tl-item"><div class="d">03.05</div><h4>全国两会：GDP 目标 4.5%—5%</h4><p>赤字率 4%、「十五五」规划纲要表决通过</p></div>
+    <div class="tl-item"><div class="d">05.13 — 15</div><h4>特朗普国事访问中国</h4><p>美国总统九年来首次访华，美媒称「脱钩」政策转向</p></div>
+    <div class="tl-item"><div class="d">06.08 — 10</div><h4>习近平访问朝鲜</h4><p>半岛外交活跃；特朗普预告秋季会晤金正恩</p></div>
+    <div class="tl-item"><div class="d">07.17</div><h4>美伊直接军事冲突</h4><p>美军袭击伊朗多省、伊朗反击美军基地；红海航运禁令重启</p></div>
+    <div class="tl-item"><div class="d">07.30</div><h4>政治局会议：增量政策 + 房地产收储</h4><p>「及时谋划出台务实管用增量政策」，下半年政策重心明确</p></div>
+    <div class="tl-item"><div class="d">08.17</div><h4>人民币升破 6.74</h4><p>三年半新高；同期黄金突破 4,600 美元</p></div>
+    <div class="tl-item"><div class="d">08.20</div><h4>美国宣布对伊朗「史上最严厉制裁」</h4><p>中东风险窗口高悬，油价高波动</p></div>
+  </div>
+</section>
+
+<!-- 未来大方向 -->
+<section class="section">
+  <div class="sec-head reveal"><span class="no">05</span><h2>未来大方向</h2></div>
+  <div class="outlook reveal">
+    <div class="oc"><div class="tag">CHINA</div><h4>增量政策只迟到，不缺席</h4><p>Q3—Q4 财政加力与降准降息大概率落地；A 股结构性行情，科技 + 并购重组为主线。</p></div>
+    <div class="oc"><div class="tag">US-CHINA</div><h4>局部协议，博弈常态化</h4><p>关税谈判分批达成局部安排；芯片管制选择性松动；11 月中期选举前对华强硬是政治正确。</p></div>
+    <div class="oc"><div class="tag">GEOPOLITICS</div><h4>俄乌和谈窗口，中东风险窗口</h4><p>2026 底—2027 年俄乌或走向「冻结冲突」；美伊制裁与空袭循环短期难解。</p></div>
+    <div class="oc"><div class="tag">MARKET</div><h4>黄金与人民币再定价未完</h4><p>黄金 4,500—5,200 美元区间震荡上行；人民币 6.6—6.8 偏强运行。</p></div>
+    <div class="oc"><div class="tag">US</div><h4>AI 牛市与基本面降温的分化</h4><p>标普 8,000—8,500 可期但波动加大；若美联储意外加息或 AI 资本开支证伪，回调 10—15% 风险上升。</p></div>
+    <div class="oc"><div class="tag">RISK</div><h4>三只灰犀牛</h4><p>美联储 2026 年底意外加息 · 霍尔木兹海峡封锁（油价 120+）· 美国中期选举后政策突变。</p></div>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer reveal">
+  <p>本页为《2026 全球现状与展望报告》精简展示版。完整 8 页 PDF 报告与约 270 条带源资料见 <span style="font-family:Consolas,monospace;font-size:12px;">D:\桌面\新闻研究\报告\</span> 与 <span style="font-family:Consolas,monospace;font-size:12px;">资料\</span> 目录。</p>
+  <p class="src">信息源自 2026-08-28 公开网络检索，每条均标注日期与来源；自媒体与存疑内容未纳入结论。本页不构成投资建议。</p>
+</footer>
+
+<script>
+// 阅读进度条
+const bar=document.getElementById('progress');
+addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
+
+// 交错入场
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    const sib=[...el.parentElement.children];
+    const i=sib.indexOf(el);
+    el.style.transitionDelay=(i%4)*90+'ms';
+    el.classList.add('in');
+    io.unobserve(el);
+  });
+},{threshold:.12});
+document.querySelectorAll('.reveal,.thread,.tl-item').forEach(el=>io.observe(el));
+
+// 数字滚动
+const fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:2});
+const nio=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    const target=parseFloat(el.dataset.target);
+    const dec=parseInt(el.dataset.decimals||'0');
+    const dur=1400;const t0=performance.now();
+    const ease=t=>1-Math.pow(1-t,3);
+    (function tick(now){
+      const p=Math.min((now-t0)/dur,1);
+      const v=target*ease(p);
+      el.childNodes[0].nodeValue=fmt.format(v.toFixed(dec))+'\u00A0';
+      if(p<1)requestAnimationFrame(tick);
+    })(t0);
+    nio.unobserve(el);
+  });
+},{threshold:.4});
+document.querySelectorAll('.n[data-target]').forEach(el=>nio.observe(el));
+</script>
+</body>
+</html>
